@@ -1,16 +1,16 @@
-const teekayRoute = (req, res) => {
-    res.send("teekay");
-}
-const teoryRoute = (req, res) => {
-    res.send("teory");
-};
+//const teekayRoute = (req, res) => {
+    //res.send("teekay");
+//};
+//const teoryRoute = (req, res) => {
+    //res.send("teory");
+//};
 
-const joyRoute = (req, res) => {
-    res.send("joy");
-};
+//const joyRoute = (req, res) => {
+    //res.send("joy");
+//};
 
-module.exports = {
-    teekayRoute,
-    teoryRoute,
-    joyRoute,
-};
+//module.exports = {
+//    teekayRoute,
+//    teoryRoute,
+//    joyRoute
+//};
