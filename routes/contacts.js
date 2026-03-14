@@ -1,13 +1,12 @@
-const routes = require('express').Router();
-const contactsController = require('../controllers/contactsController');
+const express = require("express");
+const routes = express.Router();
 
-routes.get('/', contactsController.johnRoute);
-routes.get('/JaneDoe', contactsController.janeRoute);
-routes.get('/MikeJohnson', contactsController.mikeRoute);
-routes.get('/SarahWilliams', contactsController.sarahRoute);
-routes.get('/DavidBrown', contactsController.davidRoute);
+const contactsController = require("../controllers/contactsController");
 
+// GET all contacts
+routes.get("/", contactsController.getAllContacts);
 
+// GET single contact
+routes.get("/:id", contactsController.getSingleContact);
 
-
-module.exports = routes; //exporting the routes
+module.exports = routes;

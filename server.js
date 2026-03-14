@@ -12,17 +12,33 @@
 
 
 
-const express = require('express');
+require("dotenv").config();
+const express = require("express");
+const { MongoClient } = require("mongodb");
+
+const contactsRoutes = require("./routes/contacts");
+
 const app = express();
-const contactsController = require('./controllers/contactsController');
+const PORT = process.env.PORT || 8080;
 
-const port = 8080;
+app.use(express.json());
 
-app.use('/', require('./routes/contacts'));
+// routes
+app.use("/contacts", contactsRoutes);
 
-app.listen(process.env.PORT || 8080, () => {
-  console.log('Web Server is listening at port ' + (process.env.PORT || 8080));
-});
-    
+// MongoDB connection
+MongoClient.connect(process.env.MONGODB_URL)
+  .then((client) => {
+    const db = client.db("CSE341");
+    app.locals.db = db;
 
+    console.log("Connected to MongoDB!");
+
+    app.listen(PORT, () => {
+      console.log(`Server running on http://localhost:${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error("MongoDB connection error:", err);
+  });
 
