@@ -45,7 +45,7 @@ app.use("/contacts", contactsRoutes);
 // Get PORT from environment (Render provides this)
 const PORT = process.env.PORT || 8080;
 
-// MongoDB URI
+// MongoDB URL
 const MONGODB_URL = process.env.MONGODB_URL;
 
 if (!MONGODB_URL) {
