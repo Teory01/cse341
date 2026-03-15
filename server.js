@@ -33,17 +33,17 @@ app.use("/contacts", contactsRoutes);
 const PORT = process.env.PORT || 8080;
 
 // MongoDB URI
-const MONGODB_URI = process.env.MONGODB_URI;
+const MONGODB_URL = process.env.MONGODB_URL;
 
-if (!MONGODB_URI) {
+if (!MONGODB_URL) {
   console.error("Error: MONGODB_URI is not defined in environment variables!");
-  process.exit(1); // Exit if URI is missing
+  process.exit(1); 
 }
 
 // Async function to connect to MongoDB and start server
 async function startServer() {
   try {
-    const client = new MongoClient(MONGODB_URI);
+    const client = new MongoClient(MONGODB_URL);
     await client.connect();
 
     // Save DB instance for routes
