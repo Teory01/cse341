@@ -15,37 +15,48 @@
 require("dotenv").config();
 const express = require("express");
 const { MongoClient } = require("mongodb");
-
 const contactsRoutes = require("./routes/contacts");
 
 const app = express();
-const PORT = process.env.PORT || 8080;
 
+// Middleware
 app.use(express.json());
 
-// routes
+// Routes
 app.use("/contacts", contactsRoutes);
 
-// Database connection
-const mongoUrl = process.env.MONGODB_URI; // <-- make sure your env variable is named MONGODB_URI
-if (!mongoUrl) {
-  console.error("MongoDB URI is not defined in environment variables!");
-  process.exit(1);
+// Get PORT from environment (Render provides this)
+const PORT = process.env.PORT || 8080;
+
+// MongoDB URI
+const MONGODB_URI = process.env.MONGODB_URI;
+
+if (!MONGODB_URI) {
+  console.error("Error: MONGODB_URI is not defined in environment variables!");
+  process.exit(1); // Exit if URI is missing
 }
 
-const client = new MongoClient(mongoUrl);
+// Async function to connect to MongoDB and start server
+async function startServer() {
+  try {
+    const client = new MongoClient(MONGODB_URI);
+    await client.connect();
 
-client.connect()
-  .then(() => {
-    const db = client.db("CSE341"); 
+    // Save DB instance for routes
+    const db = client.db("CSE341");
     app.locals.db = db;
 
     console.log("Connected to MongoDB!");
 
+    // Start Express server
     app.listen(PORT, () => {
       console.log(`Server running on http://localhost:${PORT}`);
     });
-  })
-  .catch((err) => {
+  } catch (err) {
     console.error("MongoDB connection error:", err);
-  });
+    process.exit(1); // Exit if connection fails
+  }
+}
+
+// Start the server
+startServer();
