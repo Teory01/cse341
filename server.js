@@ -22,6 +22,10 @@ const app = express();
 // Middleware
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  res.send("Server is running successfully");
+});
+
 // Routes
 app.use("/contacts", contactsRoutes);
 
