@@ -13,7 +13,6 @@
 
 
 require("dotenv").config();
-
 const express = require("express");
 const { MongoClient } = require("mongodb");
 
@@ -28,12 +27,17 @@ app.use(express.json());
 app.use("/contacts", contactsRoutes);
 
 // Database connection
-const mongoUrl = process.env.MONGODB_URL;
+const mongoUrl = process.env.MONGODB_URI; // <-- make sure your env variable is named MONGODB_URI
+if (!mongoUrl) {
+  console.error("MongoDB URI is not defined in environment variables!");
+  process.exit(1);
+}
 
-// MongoDB connection
-MongoClient.connect(mongoUrl)
-  .then((client) => {
-    const db = client.db("CSE341");
+const client = new MongoClient(mongoUrl);
+
+client.connect()
+  .then(() => {
+    const db = client.db("CSE341"); 
     app.locals.db = db;
 
     console.log("Connected to MongoDB!");
@@ -45,4 +49,3 @@ MongoClient.connect(mongoUrl)
   .catch((err) => {
     console.error("MongoDB connection error:", err);
   });
-
