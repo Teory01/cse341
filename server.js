@@ -22,8 +22,21 @@ const app = express();
 // Middleware
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("Server is running successfully");
+// Root route (returns a single contact)
+app.get("/", async (req, res) => {
+  try {
+    const db = req.app.locals.db;
+    const contact = await db.collection("contacts").findOne();
+
+    if (!contact) {
+      return res.status(404).json({ message: "No contacts found" });
+    }
+
+    res.json(contact);
+  } catch (error) {
+    console.error("Error fetching contact:", error);
+    res.status(500).json({ error: "Server error" });
+  }
 });
 
 // Routes
