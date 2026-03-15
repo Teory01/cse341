@@ -27,8 +27,11 @@ app.use(express.json());
 // routes
 app.use("/contacts", contactsRoutes);
 
+// Database connection
+const mongoUrl = process.env.MONGODB_URL;
+
 // MongoDB connection
-MongoClient.connect(process.env.MONGODB_URL)
+MongoClient.connect(mongoUrl)
   .then((client) => {
     const db = client.db("CSE341");
     app.locals.db = db;
