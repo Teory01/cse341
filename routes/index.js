@@ -8,3 +8,15 @@
 
 //module.exports = routes;
 
+const routes = require("express").Router();
+
+routes.use("/", require("./swagger"));
+
+routes.get("/", (req, res) => {
+    // swagger.tags = ['Root']
+    res.send("Welcome to the Contacts API! Use /api-docs for API documentation.");
+});
+
+routes.use("/contacts", require("./contacts"));
+
+module.exports = routes;    
