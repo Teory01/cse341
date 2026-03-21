@@ -12,11 +12,13 @@
 
 
 
-require('dotenv').config();
-const express = require('express');
-const { MongoClient } = require('mongodb');
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json');
+require("dotenv").config();
+
+const express = require("express");
+const { MongoClient } = require("mongodb");
+const mongoose = require("mongoose");
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger.json");
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -26,14 +28,18 @@ app.use(express.json());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Routes
-app.use('/contacts', require('./routes/contacts')); // Mount contacts routes
+app.use("/contacts", require("./routes/contacts"));
 
-// Root route (optional, returns a single contact)
-app.get('/', async (req, res) => {
+// Root route (optional)
+app.get("/", async (req, res) => {
   try {
     const db = req.app.locals.db;
-    const contact = await db.collection('contacts').findOne();
-    if (!contact) return res.status(404).json({ message: 'No contacts found' });
+    const contact = await db.collection("contacts").findOne();
+
+    if (!contact) {
+      return res.status(404).json({ message: "No contacts found" });
+    }
+
     res.json(contact);
   } catch (err) {
     console.error('Error fetching contact:', err);
