@@ -5,7 +5,7 @@ const doc = {
     title: "Author-Books API",
     description: "API for managing authors and books",
   },
-  host: "https://cse341-qvea.onrender.com",
+  host: "cse341-qvea.onrender.com",
   basePath: "/",
   schemes: ["https"],
   tags: [
