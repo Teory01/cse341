@@ -1,0 +1,107 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Books & Authors API",
+    "description": "API for managing books and authors",
+    "version": "1.0.0"
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "schemes": ["http"],
+  "paths": {
+    "/books": {
+      "get": {
+        "summary": "Get all books",
+        "responses": { "200": { "description": "List of books" } }
+      },
+      "post": {
+        "summary": "Add a new book",
+        "parameters": [{
+          "in": "body",
+          "name": "body",
+          "required": true,
+          "schema": {
+            "type": "object",
+            "properties": {
+              "title": { "type": "string" },
+              "authorName": { "type": "string" },
+              "genre": { "type": "string" },
+              "publishedYear": { "type": "integer" },
+              "pages": { "type": "integer" },
+              "language": { "type": "string" },
+              "summary": { "type": "string" }
+            }
+          }
+        }],
+        "responses": { "201": { "description": "Book created" } }
+      }
+    },
+    "/books/{id}": {
+      "get": {
+        "summary": "Get a book by ID",
+        "parameters": [{ "in": "path", "name": "id", "required": true, "type": "string" }],
+        "responses": { "200": { "description": "Book found" }, "404": { "description": "Book not found" } }
+      },
+      "put": {
+        "summary": "Update a book",
+        "parameters": [
+          { "in": "path", "name": "id", "required": true, "type": "string" },
+          { "in": "body", "name": "body", "required": true, "schema": { "type": "object" } }
+        ],
+        "responses": { "200": { "description": "Book updated" } }
+      },
+      "delete": {
+        "summary": "Delete a book",
+        "parameters": [{ "in": "path", "name": "id", "required": true, "type": "string" }],
+        "responses": { "200": { "description": "Book deleted" } }
+      }
+    },
+    "/authors": {
+      "get": {
+        "summary": "Get all authors",
+        "responses": { "200": { "description": "List of authors" } }
+      },
+      "post": {
+        "summary": "Add a new author",
+        "parameters": [{
+          "in": "body",
+          "name": "body",
+          "required": true,
+          "schema": {
+            "type": "object",
+            "properties": {
+              "firstName": { "type": "string" },
+              "lastName": { "type": "string" },
+              "nationality": { "type": "string" },
+              "birthYear": { "type": "integer" },
+              "genre": { "type": "string" },
+              "awardsWon": { "type": "integer" },
+              "biography": { "type": "string" }
+            }
+          }
+        }],
+        "responses": { "201": { "description": "Author created" } }
+      }
+    },
+    "/authors/{id}": {
+      "get": {
+        "summary": "Get an author by ID",
+        "parameters": [{ "in": "path", "name": "id", "required": true, "type": "string" }],
+        "responses": { "200": { "description": "Author found" }, "404": { "description": "Author not found" } }
+      },
+      "put": {
+        "summary": "Update an author",
+        "parameters": [
+          { "in": "path", "name": "id", "required": true, "type": "string" },
+          { "in": "body", "name": "body", "required": true, "schema": { "type": "object" } }
+        ],
+        "responses": { "200": { "description": "Author updated" } }
+      },
+      "delete": {
+        "summary": "Delete an author",
+        "parameters": [{ "in": "path", "name": "id", "required": true, "type": "string" }],
+        "responses": { "200": { "description": "Author deleted" } }
+      }
+    }
+  }
+}

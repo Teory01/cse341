@@ -1,0 +1,25 @@
+### Get all the books
+GET http://localhost:8080/books
+
+### Get single book
+GET http://localhost:8080/books/69bed8b1892cc471d09ab7f5
+
+### Get all the authors
+GET http://localhost:8080/authors
+
+### Get single author
+GET http://localhost:8080/authors/69bed838892cc471d09ab7f2
+
+### Create a new book
+POST http://localhost:8080/books
+Content-Type: application/json
+
+{
+  "title": "The Silent Code",
+  "authorName": "Elena Marquez",
+  "genre": "Science Fiction",
+  "publishedYear": 2021,
+  "pages": 356,
+  "language": "English",
+  "summary": "A young programmer discovers a hidden algorithm capable of predicting human behavior, forcing her to choose between power and privacy in a world driven by data."
+}
