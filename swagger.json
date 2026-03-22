@@ -7,7 +7,7 @@
   },
   "host": "localhost:8080",
   "basePath": "/",
-  "schemes": ["https"],
+  "schemes": ["https", "http"],
   "paths": {
     "/books": {
       "get": {

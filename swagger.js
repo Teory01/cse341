@@ -7,7 +7,7 @@ const doc = {
   },
   host: "localhost:8080",
   basePath: "/",
-  schemes: ["https"],
+  schemes: ["http", "https"],
   tags: [
     {
       name: "Books",
