@@ -5,9 +5,9 @@
     "description": "API for managing books and authors",
     "version": "1.0.0"
   },
-  "host": "localhost:8080",
+  "host": "https://cse341-qvea.onrender.com",
   "basePath": "/",
-  "schemes": ["http"],
+  "schemes": ["https"],
   "paths": {
     "/books": {
       "get": {
