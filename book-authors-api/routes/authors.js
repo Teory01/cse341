@@ -13,10 +13,17 @@ const authorValidation = [
   body('biography').notEmpty().withMessage('Biography is required')
 ];
 
+const isAuthenticated = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.status(401).json({ message: 'You must be logged in to perform this action'});
+};
+
 router.get('/', getAllAuthors);
 router.get('/:id', getAuthorById);
-router.post('/', authorValidation, createAuthor);
-router.put('/:id', authorValidation, updateAuthor);
-router.delete('/:id', deleteAuthor);
+router.post('/', isAuthenticated, authorValidation, createAuthor);
+router.put('/:id', isAuthenticated, authorValidation, updateAuthor);
+router.delete('/:id', isAuthenticated, deleteAuthor);
 
 module.exports = router;

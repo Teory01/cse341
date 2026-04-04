@@ -1,30 +1,39 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors'); 
-const { initDb } = require('./book-authors-api/db/database');
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json');
+require('dotenv').config()
+const express = require('express')
+const { initDb } = require('./book-authors-api/db/database')
+const swaggerUi = require('swagger-ui-express')
+const swaggerDocument = require('./swagger.json')
+const session = require('express-session')
+const MongoStore = require('connect-mongo').default
+const passport = require('./passport')
 
-const app = express();
-const PORT = process.env.PORT || 8080;
+const app = express()
+const port = process.env.PORT || 8080
 
-app.use(express.json());
-app.use(cors()); 
+app
+  .use(express.json())
+  .use(
+    session({
+      secret: process.env.SESSION_SECRET,
+      resave: false,
+      saveUninitialized: false,
+      store: MongoStore.create({
+        mongoUrl: process.env.MONGODB_URL
+      })
+    })
+  )
+  .use(passport.initialize())
+  .use(passport.session())
+  .use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+  .use('/books', require('./book-authors-api/routes/books'))
+  .use('/authors', require('./book-authors-api/routes/authors'))
 
-// Swagger docs
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
-// Routes
-app.use('/books', require('./book-authors-api/routes/books'));
-app.use('/authors', require('./book-authors-api/routes/authors'));
-
-// Start server after DB connects
 initDb((err) => {
   if (err) {
-    console.error('Failed to connect to database:', err);
-    process.exit(1);
+    console.log(err)
+  } else {
+    app.listen(port, () => {
+      console.log(`Server is running on port ${port}`)
+    })
   }
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
-});
+})

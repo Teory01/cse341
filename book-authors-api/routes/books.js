@@ -13,10 +13,17 @@ const bookValidation = [
   body('summary').notEmpty().withMessage('Summary is required')
 ];
 
+const isAuthenticated = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.status(401).json({ message: 'You must be logged in to perform this action'});
+};
+
 router.get('/', getAllBooks);
 router.get('/:id', getBookById);
-router.post('/', bookValidation, createBook);
-router.put('/:id', bookValidation, updateBook);
-router.delete('/:id', deleteBook);
+router.post('/',isAuthenticated, bookValidation, createBook);
+router.put('/:id', isAuthenticated, bookValidation, updateBook);
+router.delete('/:id', isAuthenticated, deleteBook);
 
 module.exports = router;

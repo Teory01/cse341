@@ -8,7 +8,55 @@
   "host": "cse341-qvea.onrender.com",
   "basePath": "/",
   "schemes": ["https"],
+   "securityDefinitions": {
+    "OAuth2": {
+      "type": "oauth2",
+      "authorizationUrl": "https://accounts.google.com/o/oauth2/auth",
+      "flow": "implicit",
+      "scopes": {
+        "profile": "Access your Google profile",
+        "email": "Access your Google email"
+      }
+    }
+  },
+
   "paths": {
+    "/auth/login": {
+      "get": {
+        "summary": "Login with Google",
+        "description": "Redirects to Google OAuth login page",
+        "responses": {
+          "302": {
+            "description": "Redirects to Google login"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "get": {
+        "summary": "Logout",
+        "description": "Logs the user out",
+        "responses": {
+          "302": {
+            "description": "Redirects after logout"
+          }
+        }
+      }
+    },
+    "/auth/profile": {
+      "get": {
+        "summary": "Get logged in user profile",
+        "description": "Returns the profile of the currently logged in user",
+        "responses": {
+          "200": {
+            "description": "User profile returned successfully"
+          },
+          "401": {
+            "description": "Not logged in"
+          }
+        }
+      }
+    },
     "/books": {
       "get": {
         "summary": "Get all books",
