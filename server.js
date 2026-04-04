@@ -25,6 +25,7 @@ app
   .use(passport.initialize())
   .use(passport.session())
   .use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+  .use('/auth', require('./book-authors-api/routes/auth')) 
   .use('/books', require('./book-authors-api/routes/books'))
   .use('/authors', require('./book-authors-api/routes/authors'))
 
