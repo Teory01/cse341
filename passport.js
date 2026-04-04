@@ -7,7 +7,8 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "/auth/google/callback",
+      callbackURL: "https://cse341-qvea.onrender.com/auth/google/callback",
+      callbackURL: "http://localhost:8080/auth/google/callback"
     },
     function (accessToken, refreshToken, profile, done) {
       return done(null, profile);
