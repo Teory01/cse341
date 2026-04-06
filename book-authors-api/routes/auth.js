@@ -2,12 +2,11 @@ const express = require('express');
 const router = express.Router();
 const passport = require('../../passport'); // correct relative path from routes folder
 
-// Login route -> redirect to Google
+// Login route redirect to Google
 router.get(
   '/login',
   passport.authenticate('google', { scope: ['profile', 'email'] })
 );
-
 // Google callback
 router.get(
   '/google/callback',
