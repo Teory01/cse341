@@ -1,14 +1,14 @@
-require('dotenv').config()
-const express = require('express')
-const { initDb } = require('./book-authors-api/db/database')
-const swaggerUi = require('swagger-ui-express')
-const swaggerDocument = require('./swagger.json')
-const session = require('express-session')
-const MongoStore = require('connect-mongo').default
-const passport = require('./passport')
+require("dotenv").config();
+const express = require("express");
+const { initDb } = require('./book-authors-api/db/database');
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger.json");
+const session = require("express-session");
+const MongoStore = require("connect-mongo").default;
+const passport = require("./passport");
 
-const app = express()
-const port = process.env.PORT || 8080
+const app = express();
+const port = process.env.PORT || 8080;
 
 app
   .use(express.json())
@@ -18,16 +18,14 @@ app
       resave: false,
       saveUninitialized: false,
       store: MongoStore.create({
-        mongoUrl: process.env.MONGODB_URL
-      })
-    })
+        mongoUrl: process.env.MONGODB_URL,
+      }),
+    }),
   )
   .use(passport.initialize())
   .use(passport.session())
-  .use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
-  .use('/auth', require('./book-authors-api/routes/auth')) 
-  .use('/books', require('./book-authors-api/routes/books'))
-  .use('/authors', require('./book-authors-api/routes/authors'))
+  .use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+  .use("/",require('./book-authors-api/routes'));
 
 initDb((err) => {
   if (err) {

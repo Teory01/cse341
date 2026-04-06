@@ -1,14 +1,13 @@
-const passport = require("passport");
-const GoogleStrategy = require("passport-google-oauth20").Strategy;
-require("dotenv").config();
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+require('dotenv').config();
 
 passport.use(
   new GoogleStrategy(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "https://cse341-qvea.onrender.com/auth/google/callback",
-      callbackURL: "http://localhost:8080/auth/google/callback"
+      callbackURL: '/auth/google/callback',
     },
     function (accessToken, refreshToken, profile, done) {
       return done(null, profile);
