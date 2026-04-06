@@ -7,20 +7,13 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: process.env.CALLBACK_URL, 
+      callbackURL: process.env.CALLBACK_URL, // use environment variable for Render
     },
-    function (accessToken, refreshToken, profile, done) {
-      return done(null, profile);
-    }
+    (accessToken, refreshToken, profile, done) => done(null, profile)
   )
 );
 
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
-
-passport.deserializeUser((user, done) => {
-  done(null, user);
-});
+passport.serializeUser((user, done) => done(null, user));
+passport.deserializeUser((user, done) => done(null, user));
 
 module.exports = passport;

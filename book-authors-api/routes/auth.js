@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const passport = require('../../passport'); 
+const passport = require('../../passport'); // correct relative path from routes folder
 
-// Login route
+// Login route -> redirect to Google
 router.get(
   '/login',
   passport.authenticate('google', { scope: ['profile', 'email'] })
@@ -13,8 +13,8 @@ router.get(
   '/google/callback',
   passport.authenticate('google', { failureRedirect: '/auth/login' }),
   (req, res) => {
-    // redirect to home or dashboard after login
-    res.redirect('/');
+    // After successful login, redirect to dashboard/home
+    res.redirect('/profile'); // or '/' if you have a home route
   }
 );
 
@@ -22,16 +22,15 @@ router.get(
 router.get('/logout', (req, res) => {
   req.logout(function (err) {
     if (err) return res.status(500).json({ error: err.message });
-    res.redirect('/');
+    res.redirect('/auth/login');
   });
 });
 
-// Profile (protected)
+// Protected profile route
 router.get('/profile', (req, res) => {
   if (!req.isAuthenticated()) {
     return res.status(401).json({ message: 'You are not logged in' });
   }
-
   res.json({
     message: 'You are logged in!',
     user: {
