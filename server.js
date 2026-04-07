@@ -40,6 +40,7 @@ app
       oauth: {
         clientId: process.env.GOOGLE_CLIENT_ID,
         appName: 'Books & Authors API',
+        usePkceWithAuthorizationCodeGrant: true,
         scopeSeparator: ' ',
         additionalQueryStringParams: {},
       },
@@ -54,7 +55,7 @@ app
 
   // Redirect root to login
   .get('/', (req, res) => {
-    res.redirect('/auth/google/login');
+    res.redirect('/auth/login');
   })
 
   // Catch-all for undefined routes
