@@ -54,7 +54,7 @@ app
 
   // Redirect root to login
   .get('/', (req, res) => {
-    res.redirect('/auth/login');
+    res.redirect('/auth/google/login');
   })
 
   // Catch-all for undefined routes
