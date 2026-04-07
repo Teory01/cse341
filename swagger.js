@@ -1,23 +1,25 @@
+// swagger-autogen.js
 const swaggerAutogen = require('swagger-autogen')();
+require('dotenv').config();
 
 const doc = {
   info: {
-    title: 'Author-Books API',
-    description: 'API for managing authors and books. Protected routes require Google OAuth authentication.',
+    title: 'Books & Authors API',
+    description: 'API for managing books and authors. Protected routes require Google OAuth.',
   },
-  host: 'cse341-qvea.onrender.com',
-  schemes: ['https'],
+  host: 'cse341-qvea.onrender.com', // your Render domain
   basePath: '/',
+  schemes: ['https'],
   tags: [
     { name: 'Auth', description: 'Authentication endpoints' },
-    { name: 'Books', description: 'Endpoints for books' },
-    { name: 'Authors', description: 'Endpoints for authors' },
+    { name: 'Books', description: 'Books endpoints' },
+    { name: 'Authors', description: 'Authors endpoints' },
   ],
   securityDefinitions: {
     OAuth2: {
       type: 'oauth2',
+      flow: 'implicit', // PKCE with auth code works in Swagger UI
       authorizationUrl: 'https://accounts.google.com/o/oauth2/v2/auth',
-      flow: 'implicit',
       scopes: {
         profile: 'Access your Google profile',
         email: 'Access your Google email',
@@ -35,4 +37,6 @@ const endpointsFiles = [
 ];
 
 // Generate Swagger JSON
-swaggerAutogen(outputFile, endpointsFiles, doc);
+swaggerAutogen(outputFile, endpointsFiles, doc).then(() => {
+  console.log('swagger.json generated successfully!');
+});
