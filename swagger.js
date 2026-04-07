@@ -28,7 +28,7 @@ const doc = {
   securityDefinitions: {
     OAuth2: {
       type: 'oauth2',
-      authorizationUrl: 'https://accounts.google.com/o/oauth2/auth',
+      authorizationUrl: 'https://accounts.google.com/o/oauth2/v2/auth',
       flow: 'implicit',
       scopes: {
         profile: 'Access your Google profile',

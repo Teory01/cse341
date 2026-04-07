@@ -31,7 +31,21 @@ app
   .use(passport.session())
 
   // Swagger documentation
-  .use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+  app.use(
+  '/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument, null, {
+    oauth2RedirectUrl: 'https://cse341-qvea.onrender.com/api-docs/oauth2-redirect.html',
+    swaggerOptions: {
+      oauth: {
+        clientId: process.env.GOOGLE_CLIENT_ID,
+        appName: 'Books & Authors API',
+        scopeSeparator: ' ',
+        additionalQueryStringParams: {},
+      },
+    },
+  })
+)
 
   // Routes
   .use('/auth', require('./book-authors-api/routes/auth'))
