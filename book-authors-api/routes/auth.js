@@ -1,4 +1,3 @@
-// routes/auth.js
 const express = require('express');
 const router = express.Router();
 const passport = require('../../passport');
@@ -6,7 +5,10 @@ const passport = require('../../passport');
 // Login route
 router.get(
   '/login',
-  passport.authenticate('google', { scope: ['profile', 'email'] })
+  passport.authenticate('google', {
+    scope: ['profile', 'email'],
+    prompt: 'select_account' 
+  })
 );
 
 // Google OAuth callback
@@ -17,7 +19,7 @@ router.get(
     session: true,
   }),
   (req, res) => {
-    res.redirect('/'); // Successful login
+    res.redirect('/');
   }
 );
 
@@ -29,17 +31,18 @@ router.get('/logout', (req, res, next) => {
   });
 });
 
-// Profile route (protected)
+// Profile route
 router.get('/profile', (req, res) => {
   if (!req.isAuthenticated()) {
     return res.status(401).json({ message: 'You are not logged in' });
   }
+
   res.json({
     message: 'You are logged in!',
     user: {
       id: req.user.id,
       name: req.user.displayName,
-      email: req.user.emails ? req.user.emails[0].value : null,
+      email: req.user.emails?.[0]?.value || null, 
     },
   });
 });

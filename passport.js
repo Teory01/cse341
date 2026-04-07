@@ -1,4 +1,4 @@
-// passport.js
+
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 require('dotenv').config();
@@ -8,10 +8,10 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: process.env.CALLBACK_URL, // Must match Google Console
+      callbackURL:"https://cse341-qvea.onrender.com/auth/google/callback"
     },
     (accessToken, refreshToken, profile, done) => {
-      // You can save the user in DB here if needed
+      
       return done(null, profile);
     }
   )
