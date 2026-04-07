@@ -55,7 +55,7 @@ initDb((err) => {
   } else {
     app.listen(port, () => {
       console.log(`Server running on port ${port}`);
-      console.log(`Google OAuth callback URI: ${process.env.CALLBACK_URI}`);
+      console.log(`Google OAuth callback URL: ${process.env.CALLBACK_URL}`);
     });
   }
 });

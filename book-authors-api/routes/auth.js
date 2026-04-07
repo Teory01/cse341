@@ -33,10 +33,10 @@ router.get('/profile', (req, res) => {
   res.json({
     message: 'You are logged in!',
     user: {
+      id: req.user.id,
       name: req.user.displayName,
-      email: req.user.emails[0].value,
+      email: req.user.emails ? req.user.emails[0].value : null,
     },
   });
 });
-
 module.exports = router;
