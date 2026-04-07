@@ -2,75 +2,62 @@ require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
 const MongoStore = require('connect-mongo').default;
-const passport = require('./passport'); 
-const { initDb } = require('./book-authors-api/db/database'); 
+const passport = require('./passport');
+const { initDb } = require('./book-authors-api/db/database');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 
 const app = express();
 const port = process.env.PORT || 8080;
 
-app
-  // Parse JSON
-  .use(express.json())
+// Middleware
+app.use(express.json());
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({ mongoUrl: process.env.MONGODB_URL }),
+    cookie: { secure: process.env.NODE_ENV === 'production', httpOnly: true },
+  })
+);
 
-  // Session configuration
-  .use(
-    session({
-      secret: process.env.SESSION_SECRET,
-      resave: false,
-      saveUninitialized: false,
-      store: MongoStore.create({
-        mongoUrl: process.env.MONGODB_URL, 
-      }),
-    })
-  )
+app.use(passport.initialize());
+app.use(passport.session());
 
-  // Passport initialization
-  .use(passport.initialize())
-  .use(passport.session())
-
-  // Swagger documentation
-  app.use(
+// Swagger setup
+app.use(
   '/api-docs',
   swaggerUi.serve,
   swaggerUi.setup(swaggerDocument, null, {
-    oauth2RedirectUrl: 'https://cse341-qvea.onrender.com/api-docs/oauth2-redirect.html',
     swaggerOptions: {
+      oauth2RedirectUrl: `${process.env.CALLBACK_URL.replace('/auth/google/callback', '')}/api-docs/oauth2-redirect.html`,
       oauth: {
         clientId: process.env.GOOGLE_CLIENT_ID,
         appName: 'Books & Authors API',
         usePkceWithAuthorizationCodeGrant: true,
         scopeSeparator: ' ',
-        additionalQueryStringParams: {},
       },
     },
   })
-)
+);
 
-  // Routes
-  .use('/auth', require('./book-authors-api/routes/auth'))
-  .use('/books', require('./book-authors-api/routes/books'))
-  .use('/authors', require('./book-authors-api/routes/authors'))
+// Routes
+app.use('/auth', require('./book-authors-api/routes/auth'));
+app.use('/books', require('./book-authors-api/routes/books'));
+app.use('/authors', require('./book-authors-api/routes/authors'));
 
-  // Redirect root to login
-  .get('/', (req, res) => {
-    res.redirect('/auth/login');
-  })
+// Root redirect
+app.get('/', (req, res) => res.redirect('/auth/login'));
 
-  // Catch-all for undefined routes
-  .use((req, res) => {
-    res.status(404).json({ error: 'Route not found' });
-  });
+// 404 handler
+app.use((req, res) => res.status(404).json({ error: 'Route not found' }));
 
-// Initialize database and start server
+// Start DB + server
 initDb((err) => {
-  if (err) {
-    console.error('Database connection failed:', err);
-  } else {
-    app.listen(port, () => {
-      console.log(`Server running on port ${port}`);
-      console.log(`Google OAuth callback URL: ${process.env.CALLBACK_URL}`);
-    });
-  }
+  if (err) return console.error('Database connection failed:', err);
+  app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+    console.log(`Google OAuth callback URL: ${process.env.CALLBACK_URL}`);
+  });
 });

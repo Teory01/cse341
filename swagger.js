@@ -6,25 +6,12 @@ const doc = {
     description: 'API for managing authors and books. Protected routes require Google OAuth authentication.',
   },
   host: 'cse341-qvea.onrender.com',
-  basePath: '/',
   schemes: ['https'],
-
   tags: [
-    {
-      name: 'Auth',
-      description: 'Authentication endpoints',
-    },
-    {
-      name: 'Books',
-      description: 'Endpoints for books',
-    },
-    {
-      name: 'Authors',
-      description: 'Endpoints for authors',
-    }
+    { name: 'Auth', description: 'Authentication endpoints' },
+    { name: 'Books', description: 'Endpoints for books' },
+    { name: 'Authors', description: 'Endpoints for authors' },
   ],
-
-  
   securityDefinitions: {
     OAuth2: {
       type: 'oauth2',
@@ -32,10 +19,10 @@ const doc = {
       flow: 'implicit',
       scopes: {
         profile: 'Access your Google profile',
-        email: 'Access your Google email'
-      }
-    }
-  }
+        email: 'Access your Google email',
+      },
+    },
+  },
 };
 
 const outputFile = './swagger.json';
@@ -43,7 +30,7 @@ const endpointsFiles = [
   './server.js',
   './book-authors-api/routes/auth.js',
   './book-authors-api/routes/books.js',
-  './book-authors-api/routes/authors.js'
+  './book-authors-api/routes/authors.js',
 ];
 
 swaggerAutogen(outputFile, endpointsFiles, doc);
