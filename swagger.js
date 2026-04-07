@@ -24,7 +24,7 @@ const doc = {
     }
   ],
 
-  // ✅ ADD THIS (VERY IMPORTANT)
+  
   securityDefinitions: {
     OAuth2: {
       type: 'oauth2',
@@ -39,8 +39,6 @@ const doc = {
 };
 
 const outputFile = './swagger.json';
-
-// ✅ Include ALL route files (important for detection)
 const endpointsFiles = [
   './server.js',
   './book-authors-api/routes/auth.js',

@@ -2,8 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
 const MongoStore = require('connect-mongo').default;
-const passport = require('./passport'); // root-level passport
-const { initDb } = require('./book-authors-api/db/database'); // adjust path if needed
+const passport = require('./passport'); 
+const { initDb } = require('./book-authors-api/db/database'); 
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 
@@ -21,7 +21,7 @@ app
       resave: false,
       saveUninitialized: false,
       store: MongoStore.create({
-        mongoUrl: process.env.MONGODB_URL, // use same env as your original
+        mongoUrl: process.env.MONGODB_URL, 
       }),
     })
   )
