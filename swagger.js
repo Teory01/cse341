@@ -7,6 +7,7 @@ const doc = {
   },
   host: 'cse341-qvea.onrender.com',
   schemes: ['https'],
+  basePath: '/',
   tags: [
     { name: 'Auth', description: 'Authentication endpoints' },
     { name: 'Books', description: 'Endpoints for books' },
@@ -33,4 +34,5 @@ const endpointsFiles = [
   './book-authors-api/routes/authors.js',
 ];
 
+// Generate Swagger JSON
 swaggerAutogen(outputFile, endpointsFiles, doc);
