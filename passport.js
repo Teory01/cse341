@@ -9,7 +9,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: process.env.CALLBACK_URL, 
+      callbackURL: "https://cse341-qvea.onrender.com/auth/google/callback",
     },
     (accessToken, refreshToken, profile, done) => done(null, profile)
   )
