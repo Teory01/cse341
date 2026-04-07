@@ -2,7 +2,8 @@
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
-const MongoStore = require('connect-mongo');
+
+const MongoStore = require('connect-mongo').default; 
 const passport = require('./passport');
 const { initDb } = require('./book-authors-api/db/database');
 const swaggerUi = require('swagger-ui-express');
@@ -22,10 +23,10 @@ app.use(
     saveUninitialized: false,
     store: MongoStore.create({ mongoUrl: process.env.MONGODB_URL }),
     cookie: {
-      secure: true, 
+      secure: true,      
       httpOnly: true,
-      sameSite: 'none', 
-      maxAge: 24 * 60 * 60 * 1000,
+      sameSite: 'none',   
+      maxAge: 24 * 60 * 60 * 1000, 
     },
   })
 );
