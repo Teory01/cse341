@@ -36,7 +36,6 @@ const endpointsFiles = [
   './book-authors-api/routes/authors.js',
 ];
 
-// Generate Swagger JSON
 swaggerAutogen(outputFile, endpointsFiles, doc).then(() => {
   console.log('swagger.json generated successfully!');
 });

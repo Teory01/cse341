@@ -1,4 +1,3 @@
-// server.js
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
@@ -13,13 +12,13 @@ const app = express();
 const port = process.env.PORT || 8080;
 
 
-// Required for Render proxy
+
 app.set('trust proxy', 1);
 
-// Parse JSON bodies
+
 app.use(express.json());
 
-// Session config
+
 app.use(
   session({
     name: 'connect.sid',
@@ -29,7 +28,7 @@ app.use(
     store: MongoStore.create({ mongoUrl: process.env.MONGODB_URL }),
     proxy: true,
     cookie: {
-      secure: true,       // HTTPS only
+      secure: true,      
       httpOnly: true,     
       sameSite: 'none',   
       maxAge: 24 * 60 * 60 * 1000,
@@ -37,7 +36,7 @@ app.use(
   })
 );
 
-// Passport initialization
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -86,9 +85,7 @@ app.get('/', (req, res) => {
   }
 });
 
-// ========================
-// Debug Route (optional)
-// ========================
+
 app.get('/test-auth', (req, res) => {
   res.json({
     isAuthenticated: req.isAuthenticated(),
@@ -96,16 +93,12 @@ app.get('/test-auth', (req, res) => {
   });
 });
 
-// ========================
-// 404 handler (must be last)
-// ========================
+
 app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });
 });
 
-// ========================
-// START SERVER
-// ========================
+
 initDb((err) => {
   if (err) {
     console.error('Database connection failed:', err);
