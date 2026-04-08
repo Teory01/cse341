@@ -1,15 +1,17 @@
+// server.js
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
-const MongoStore = require('connect-mongo').default;
+
+const MongoStore = require('connect-mongo').default; 
 const passport = require('./passport');
 const { initDb } = require('./book-authors-api/db/database');
 const swaggerUi = require('swagger-ui-express');
-const path = require('path');
-const swaggerDocument = require(path.join(__dirname, 'book-authors-api', 'swagger.json')); // adjust if swagger.json is elsewhere
+const swaggerDocument = require('./swagger.json');
 
 const app = express();
 const port = process.env.PORT || 8080;
+
 
 // Required for Render proxy
 app.set('trust proxy', 1);
