@@ -7,7 +7,8 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "https://cse341-qvea.onrender.com/auth/google/callback"
+      callbackURL: "https://cse341-qvea.onrender.com/auth/google/callback",
+      redirectURI: 'https://cse341-qvea.onrender.com/api-docs/oauth2-redirect.html',
     },
     (accessToken, refreshToken, profile, done) => {
       const user = {
