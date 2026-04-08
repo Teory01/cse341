@@ -7,12 +7,12 @@ const passport = require('./passport');
 const app = express();
 const port = process.env.PORT || 8080;
 
-// 🔥 REQUIRED FOR RENDER
+
 app.set('trust proxy', 1);
 
 app.use(express.json());
 
-// 🔥 SESSION (FIXED)
+
 app.use(
   session({
     name: 'connect.sid',
@@ -30,26 +30,38 @@ app.use(
   })
 );
 
+
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Routes
+// ========================
+// ROUTES
+// ========================
 app.use('/auth', require('./book-authors-api/routes/auth'));
+app.use('/books', require('./book-authors-api/routes/books'));
+app.use('/authors', require('./book-authors-api/routes/authors'));
 
-
+// ========================
+// HOME ROUTE
+// ========================
 app.get('/', (req, res) => {
   if (req.isAuthenticated()) {
-    res.send(
-      `Hello ${req.user.name} 
-      <br><a href="/auth/profile">Profile</a> 
-      <br><a href="/auth/logout">Logout</a>`
-    );
+    res.send(`
+      <h1>Welcome ${req.user.name}</h1>
+      <a href="/auth/profile">Profile</a><br>
+      <a href="/auth/logout">Logout</a>
+    `);
   } else {
-    res.redirect('/auth/login');
+    res.status(200).send(`
+      <h1>Not logged in</h1>
+      <a href="/auth/login">Login with Google</a>
+    `);
   }
 });
 
-
+// ========================
+// DEBUG ROUTE (optional)
+// ========================
 app.get('/test-auth', (req, res) => {
   res.json({
     isAuthenticated: req.isAuthenticated(),
@@ -57,11 +69,17 @@ app.get('/test-auth', (req, res) => {
   });
 });
 
-// 404
+// ========================
+// 404 HANDLER (LAST)
+// ========================
 app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });
 });
 
+// ========================
+// START SERVER
+// ========================
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
+  console.log('Google OAuth callback URL: https://cse341-qvea.onrender.com/auth/google/callback');
 });
