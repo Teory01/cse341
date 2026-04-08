@@ -56,6 +56,7 @@ app.use(
         appName: 'Books & Authors API',
         usePkceWithAuthorizationCodeGrant: true,
         scopeSeparator: ' ',
+        additionalQueryStringParams: { prompt: 'select_account' }, // ensures login prompt
       },
     },
   })
