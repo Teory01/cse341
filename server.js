@@ -1,9 +1,7 @@
-// server.js
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
-
-const MongoStore = require('connect-mongo').default; 
+const MongoStore = require('connect-mongo').default;
 const passport = require('./passport');
 const { initDb } = require('./book-authors-api/db/database');
 const swaggerUi = require('swagger-ui-express');
@@ -12,21 +10,24 @@ const swaggerDocument = require('./swagger.json');
 const app = express();
 const port = process.env.PORT || 8080;
 
+// ✅ TRUST PROXY (REQUIRED FOR RENDER)
+app.set('trust proxy', 1);
 
 app.use(express.json());
 
-
+// ✅ FIXED SESSION CONFIG
 app.use(
   session({
     secret: process.env.SESSION_SECRET || 'secret',
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({ mongoUrl: process.env.MONGODB_URL }),
+    proxy: true,
     cookie: {
-      secure: true,      
+      secure: true,       // required for HTTPS (Render)
       httpOnly: true,
-      sameSite: 'none',   
-      maxAge: 24 * 60 * 60 * 1000, 
+      sameSite: 'none',   // required for cross-site cookies
+      maxAge: 24 * 60 * 60 * 1000,
     },
   })
 );
@@ -34,10 +35,12 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Routes
 app.use('/auth', require('./book-authors-api/routes/auth'));
 app.use('/books', require('./book-authors-api/routes/books'));
 app.use('/authors', require('./book-authors-api/routes/authors'));
 
+// Swagger
 app.use(
   '/api-docs',
   swaggerUi.serve,
@@ -53,21 +56,23 @@ app.use(
   })
 );
 
+// Home route
 app.get('/', (req, res) => {
   if (req.isAuthenticated()) {
     res.send(
-      `Hello ${req.user.displayName}! <a href="/auth/logout">Logout</a> | <a href="/auth/profile">Profile</a>`
+      `Hello ${req.user.name}! <a href="/auth/logout">Logout</a> | <a href="/auth/profile">Profile</a>`
     );
   } else {
-    res.redirect('/auth/login');
+    res.redirect('/auth/google');
   }
 });
 
+// 404
 app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });
 });
 
-
+// Start server
 initDb((err) => {
   if (err) {
     console.error('Database connection failed:', err);

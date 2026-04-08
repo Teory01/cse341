@@ -2,12 +2,12 @@ const express = require('express');
 const router = express.Router();
 const passport = require('../../passport');
 
-// Login route
+// Start Google login
 router.get(
-  '/login',
+  '/google',
   passport.authenticate('google', {
     scope: ['profile', 'email'],
-    prompt: 'select_account' 
+    prompt: 'select_account',
   })
 );
 
@@ -15,7 +15,7 @@ router.get(
 router.get(
   '/google/callback',
   passport.authenticate('google', {
-    failureRedirect: '/auth/login',
+    failureRedirect: '/auth/google',
     session: true,
   }),
   (req, res) => {
@@ -23,7 +23,7 @@ router.get(
   }
 );
 
-// Logout route
+// Logout
 router.get('/logout', (req, res, next) => {
   req.logout((err) => {
     if (err) return next(err);
@@ -41,8 +41,8 @@ router.get('/profile', (req, res) => {
     message: 'You are logged in!',
     user: {
       id: req.user.id,
-      name: req.user.displayName,
-      email: req.user.emails?.[0]?.value || null, 
+      name: req.user.name,
+      email: req.user.email,
     },
   });
 });
