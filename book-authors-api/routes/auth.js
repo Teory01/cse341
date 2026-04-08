@@ -4,7 +4,7 @@ const passport = require('../../passport');
 
 // Start Google login
 router.get(
-  '/google',
+  '/login',
   passport.authenticate('google', {
     scope: ['profile', 'email'],
     prompt: 'select_account',

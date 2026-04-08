@@ -10,12 +10,12 @@ const swaggerDocument = require('./swagger.json');
 const app = express();
 const port = process.env.PORT || 8080;
 
-// ✅ TRUST PROXY (REQUIRED FOR RENDER)
+
 app.set('trust proxy', 1);
 
 app.use(express.json());
 
-// ✅ FIXED SESSION CONFIG
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET || 'secret',
@@ -24,9 +24,9 @@ app.use(
     store: MongoStore.create({ mongoUrl: process.env.MONGODB_URL }),
     proxy: true,
     cookie: {
-      secure: true,       // required for HTTPS (Render)
+      secure: true,       
       httpOnly: true,
-      sameSite: 'none',   // required for cross-site cookies
+      sameSite: 'none',   
       maxAge: 24 * 60 * 60 * 1000,
     },
   })
